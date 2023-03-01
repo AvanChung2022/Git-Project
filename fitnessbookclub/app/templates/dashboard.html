@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We' crossorigin='anonymous'>
+    <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js' integrity='sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj' crossorigin='anonymous'></script>
+    <link rel="stylesheet" href="{{url_for ('static' , filename='/css/style.css')}}">
+    <title>Book Dashboard</title>
+</head>
+<body>
+    <div class="container row justify-content-center mx-auto mt-2">
+        <div class="row">
+            <h1 class="p-0 col-6">Welcome to Fitness Book Club</h1>
+            <h2 class="p-0 col-6">{{user.first_name}} {{user.last_name}}</h2>
+        </div>
+        <a href="/dashboard" class="btn btn-secondary offset-1 col-1" style="height: 70%;">Dashboard</a>
+        <a href="/books/new" class="btn btn-secondary offset-3 col-1" style="height: 90%">Log a Book</a>
+        <a href="/user/logout" class="btn btn-secondary offset-1 col-1" style="height: 70%;">Logout</a>
+        <div class="row">
+            <h4>Logged Fitness Books</h4>
+
+            <table class="table table-dark table-striped table-hover table-sm fs-4 text-center">
+                <thead>
+                    <tr>
+                        <th>Title:</th>
+                        <th>Logged by:</th>
+                        <th>Actions:</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book in books %}
+                        <tr>
+                            <td>{{book.title}}</td>
+                            <td>{{book.creator.first_name}} {{book.creator.last_name}}</td>
+                            <td>
+                                <a href="/books/{{book.id}}" class="btn btn-success">View</a>
+                                {% if session['user_id'] == book.creator.id %}
+                                    <a href="/books/edit/{{book.id}}" class="btn btn-secondary">Edit</a>
+                                    <a href="/books/destroy/{{book.id}}" class="btn btn-danger">Delete</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
